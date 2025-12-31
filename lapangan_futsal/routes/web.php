@@ -4,11 +4,12 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\FieldController;
 use App\Models\User;
 use App\Http\Controllers\UserController;
 
 
-Route::get('/login', [AuthController::class, 'showLoginForm']);
+Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
 Route::get('/register', [AuthController::class, 'showRegisterForm']);
 Route::post('/register', [AuthController::class, 'register']);
@@ -26,4 +27,12 @@ Route::middleware("auth")->group(function () {
 
     Route::get('/profile', [UserController::class, 'showProfile']);
     Route::put('/profile', [UserController::class, 'updateProfile']);
+
+    Route::get('/fields', [FieldController::class, 'index']);
+    Route::get('/fields/create', [FieldController::class, 'create']);
+    Route::post('/fields', [FieldController::class, 'store']);
+    Route::get('/fields/{id}/edit', [FieldController::class, 'edit']);
+    Route::put('/fields/{id}', [FieldController::class, 'update']);
+    Route::delete('/fields/{id}', [FieldController::class, 'destroy']);
 });
+
