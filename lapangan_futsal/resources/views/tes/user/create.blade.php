@@ -10,7 +10,8 @@
 </head>
 
 <body>
-    <form action="/register" method="POST">
+    <h1 class="text-2xl">User</h1>
+    <form action="/users" method="POST">
         @csrf
         @method("POST")
         <div>
@@ -29,19 +30,23 @@
             @error('phone_number')
             <p class="text-red-500">{{ $message }}</p>
             @enderror
-            <input type="text" name="phone_number" placeholder="Phone Number" class="border" value="{{ old('phone_number') }}">
+            <input type="text" name="phone_number" placeholder="Phone Number" class="border"
+                value="{{ old('phone_number') }}">
         </div>
         <div>
-            @error('password')
+            @error('role_id')
             <p class="text-red-500">{{ $message }}</p>
             @enderror
-            <input type="password" name="password" placeholder="Password" class="border">
+            <select name="role_id" class="border">
+                <option value="">Pilih Role</option>
+                @foreach ($roles as $role)
+                <option value="{{ $role->id }}" {{ old('role_id')==$role->id ? 'selected' : '' }}>
+                    {{ $role->name }}</option>
+                @endforeach
+            </select>
         </div>
         <div>
-            <input type="password" name="password_confirmation" placeholder="Konfirmasi Password" class="border">
-        </div>
-        <div>
-            <button type="submit" class="border">Register</button>
+            <button type="submit" class="border">Save</button>
         </div>
     </form>
 </body>

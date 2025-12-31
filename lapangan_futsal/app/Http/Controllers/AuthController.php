@@ -64,12 +64,16 @@ class AuthController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
+            'phone_number' => 'required|string|max:15',
             'password' => 'required|min:8|confirmed',
         ], [
             'name.required' => 'Nama harus diisi',
             'email.required' => 'Email harus diisi',
             'email.email' => 'Format email tidak valid',
             'email.unique' => 'Email sudah terdaftar',
+            'phone_number.required' => 'Nomor HP harus diisi',
+            'phone_number.string' => 'Nomor HP harus berupa string',
+            'phone_number.max' => 'Nomor HP maksimal 15 karakter',
             'password.required' => 'Password harus diisi',
             'password.min' => 'Password minimal 8 karakter',
             'password.confirmed' => 'Konfirmasi password tidak cocok',
@@ -85,6 +89,7 @@ class AuthController extends Controller
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
+            'phone_number' => $request->phone_number,
             'password' => Hash::make($request->password),
             'role_id' => 3, // id role user
         ]);
