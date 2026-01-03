@@ -87,6 +87,7 @@
     </div>
     @endif
     <br>
+    @if (auth()->user()->hasRole('user'))
     @if ($reservation->status == 'pending')
     @if (!$latestPayment || $latestPayment->status == 'failed')
     <div>
@@ -119,6 +120,25 @@
                 <input type="file" name="payment_proof" placeholder="Bukti Pembayaran" class="border">
             </div>
             <button type="submit" class="border">Bayar</button>
+        </form>
+    </div>
+    @endif
+    @endif
+    @endif
+
+    @if (auth()->user()->hasRole('admin') || auth()->user()->hasRole('pengelola'))
+    @if($latestPayment)
+    <div>
+        <h2 class="text-2xl">Tindak lanjut pembayaran</h2>
+        <form action="/reservations/{{ $reservation->id }}/payments/{{ $latestPayment->id }}/status" method="POST">
+            @csrf
+            @method('PUT')
+            <select name="status" class="border">
+                <option value="success">Berhasil</option>
+                <option value="pending">Pending</option>
+                <option value="failed">Gagal</option>
+            </select>
+            <button type="submit" class="border">Tindak Lanjut</button>
         </form>
     </div>
     @endif

@@ -31,6 +31,9 @@
                     <a href="/reservations">reservasi</a>
                 </li>
                 <li class="border p-1">
+                    <a href="/activity-log">activity log</a>
+                </li>
+                <li class="border p-1">
                     <a href="/profile">profile</a>
                 </li>
                 @endif

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Payment;
+use App\Models\Reservation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -12,22 +13,6 @@ class PaymentController extends Controller
     {
         return collect([['name' => 'bank_transfer'], ['name' => 'cash']])
             ->map(fn($item) => (object)$item);
-    }
-
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
     }
 
     /**
@@ -62,34 +47,43 @@ class PaymentController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function updateStatus(Request $request, string $reservationId, string $paymentId)
     {
-        //
-    }
+        $payment = Payment::findOrFail($paymentId);
+        $reservation = Reservation::findOrFail($reservationId);
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        $validator = Validator::make($request->all(), [
+            'status' => 'required|in:success,pending,failed',
+        ]);
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        $payment->update([
+            'status' => $request->status,
+        ]);
+
+        if ($request->status == 'success') {
+            $reservation->update([
+                'status' => 'paid',
+            ]);
+        }
+
+        if ($request->status == 'pending') {
+            $reservation->update([
+                'status' => 'pending',
+            ]);
+        }
+
+        if ($request->status == 'failed') {
+            $reservation->update([
+                'status' => 'pending',
+            ]);
+        }
+
+        catat_log('update', 'Mengubah status pembayaran');
+        return redirect()->back()->with('success', 'Status pembayaran berhasil diperbarui.');
     }
 }

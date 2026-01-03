@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ActivityLogController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\AuthController;
@@ -35,6 +36,8 @@ Route::middleware("auth")->group(function () {
         Route::get('/users/{id}/edit', [UserController::class, 'edit']);
         Route::put('/users/{id}', [UserController::class, 'update']);
         Route::delete('/users/{id}', [UserController::class, 'destroy']);
+
+        Route::get('/activity-log', [ActivityLogController::class, 'index']);
     });
 
     Route::middleware('role:admin,pengelola')->group(function () {
@@ -53,6 +56,7 @@ Route::middleware("auth")->group(function () {
         Route::delete('/schedules/{id}', [ScheduleController::class, 'destroy']);
 
         Route::put('/reservations/{id}', [ReservasionController::class, 'update']);
+        Route::put('/reservations/{reservationId}/payments/{paymentId}/status', [PaymentController::class, 'updateStatus']);
     });
 
     Route::middleware('role:user')->group(function () {

@@ -35,18 +35,22 @@
                 <td class="border p-2">{{ $schedule->field->price_per_hour }}</td>
                 <td class="border p-2">{{ $schedule->status }}</td>
                 <td class="border p-2">
+                    @if (auth()->user()->hasRole('admin') || auth()->user()->hasRole('pengelola'))
                     <a href="/schedules/{{ $schedule->id }}/edit" class="border">Edit</a>
                     <form action="/schedules/{{ $schedule->id }}" method="POST" class="inline">
                         @csrf
                         @method("DELETE")
                         <button type="submit" class="border">Delete</button>
                     </form>
+                    @endif
+                    @if (auth()->user()->hasRole('user'))
                     <form action="/reservations" method="POST" class="inline">
                         @csrf
                         @method("POST")
                         <input type="hidden" name="schedule_id" value="{{ $schedule->id }}">
                         <button type="submit" class="border">Pesan</button>
                     </form>
+                    @endif
                 </td>
             </tr>
             @empty

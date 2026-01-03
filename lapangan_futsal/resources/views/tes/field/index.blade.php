@@ -17,7 +17,9 @@
                 <th class="border">Name</th>
                 <th class="border">Type</th>
                 <th class="border">Price Per Hour</th>
+                @if (auth()->user()->hasRole('admin') || auth()->user()->hasRole('pengelola'))
                 <th class="border">Action</th>
+                @endif
             </tr>
         </thead>
         <tbody>
@@ -26,6 +28,7 @@
                 <td class="border p-2">{{ $field->name }}</td>
                 <td class="border p-2">{{ $field->type }}</td>
                 <td class="border p-2">{{ $field->price_per_hour }}</td>
+                @if (auth()->user()->hasRole('admin') || auth()->user()->hasRole('pengelola'))
                 <td class="border p-2">
                     <a href="/fields/{{ $field->id }}/edit" class="border">Edit</a>
                     <form action="/fields/{{ $field->id }}" method="POST" class="inline">
@@ -34,6 +37,7 @@
                         <button type="submit" class="border">Delete</button>
                     </form>
                 </td>
+                @endif
             </tr>
             @empty
             <tr>
