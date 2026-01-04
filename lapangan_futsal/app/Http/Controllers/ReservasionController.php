@@ -18,13 +18,13 @@ class ReservasionController extends Controller
      */
     public function index()
     {
-        $reservations = Reservation::with('user', 'schedule.field')->get();
+        $reservations = Reservation::with('user', 'schedule.field')->orderBy('reservation_date', 'desc')->get();
         return view('tes.reservasion.index', ['reservations' => $reservations]);
     }
 
     public function findByUser()
     {
-        $reservations = Reservation::with('user', 'schedule.field')->where('user_id', Auth::id())->get();
+        $reservations = Reservation::with('user', 'schedule.field')->where('user_id', Auth::id())->orderBy('reservation_date', 'desc')->get();
         return view('tes.reservasion.index', ['reservations' => $reservations]);
     }
 
