@@ -10,40 +10,42 @@
         {{ session('error') }}
     </div>
     @endsession
-    <a href="/fields/create" class="border">Create</a>
-    <table class="table-auto">
-        <thead>
-            <tr>
-                <th class="border">Name</th>
-                <th class="border">Type</th>
-                <th class="border">Price Per Hour</th>
-                @if (auth()->user()->hasRole('admin') || auth()->user()->hasRole('pengelola'))
-                <th class="border">Action</th>
-                @endif
-            </tr>
-        </thead>
-        <tbody>
-            @forelse($fields as $field)
-            <tr>
-                <td class="border p-2">{{ $field->name }}</td>
-                <td class="border p-2">{{ $field->type }}</td>
-                <td class="border p-2">{{ $field->price_per_hour }}</td>
-                @if (auth()->user()->hasRole('admin') || auth()->user()->hasRole('pengelola'))
-                <td class="border p-2">
-                    <a href="/fields/{{ $field->id }}/edit" class="border">Edit</a>
-                    <form action="/fields/{{ $field->id }}" method="POST" class="inline">
-                        @csrf
-                        @method("DELETE")
-                        <button type="submit" class="border">Delete</button>
-                    </form>
-                </td>
-                @endif
-            </tr>
-            @empty
-            <tr>
-                <td colspan="4">No data</td>
-            </tr>
-            @endforelse
-        </tbody>
-    </table>
+    <a href="/fields/create" class="btn btn-primary">Create</a>
+    <div class="overflow-x-auto bg-base-100 border border-base-300 rounded">
+        <table class="table table-zebra">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Type</th>
+                    <th>Price Per Hour</th>
+                    @if (auth()->user()->hasRole('admin') || auth()->user()->hasRole('pengelola'))
+                    <th>Action</th>
+                    @endif
+                </tr>
+            </thead>
+            <tbody>
+                @forelse($fields as $field)
+                <tr>
+                    <td>{{ $field->name }}</td>
+                    <td>{{ $field->type }}</td>
+                    <td>{{ $field->price_per_hour }}</td>
+                    @if (auth()->user()->hasRole('admin') || auth()->user()->hasRole('pengelola'))
+                    <td>
+                        <a href="/fields/{{ $field->id }}/edit" class="btn btn-warning">Edit</a>
+                        <form action="/fields/{{ $field->id }}" method="POST" class="inline">
+                            @csrf
+                            @method("DELETE")
+                            <button type="submit" class="btn btn-error">Delete</button>
+                        </form>
+                    </td>
+                    @endif
+                </tr>
+                @empty
+                <tr>
+                    <td colspan="4">No data</td>
+                </tr>
+                @endforelse
+            </tbody>
+        </table>
+    </div>
 </x-base-layout>

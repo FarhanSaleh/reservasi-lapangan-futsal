@@ -10,48 +10,52 @@
         {{ session('error') }}
     </div>
     @endsession
-    <a href="/schedules" class="border">Reservasi</a>
-    <table class="table-auto">
-        <thead>
-            <tr>
-                <th class="border">Tanggal Reservasi</th>
-                <th class="border">Status</th>
-                <th class="border">Customer</th>
-                <th class="border">Lapangan</th>
-                <th class="border">Jadwal Hari</th>
-                <th class="border">Waktu Mulai</th>
-                <th class="border">Waktu Selesai</th>
-                <th class="border">Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            @forelse($reservations as $reservation)
-            <tr>
-                <td class="border p-2">{{ $reservation->reservation_date }}</td>
-                <td class="border p-2">{{ $reservation->status }}</td>
-                <td class="border p-2">{{ $reservation->user->name }}</td>
-                <td class="border p-2">{{ $reservation->schedule->field->name }}</td>
-                <td class="border p-2">{{ $reservation->schedule->day }}</td>
-                <td class="border p-2">{{ $reservation->schedule->start_time }}</td>
-                <td class="border p-2">{{ $reservation->schedule->end_time }}</td>
-                <td class="border p-2">
-                    @if (auth()->user()->hasRole('user'))
-                    @if ($reservation->status == 'pending')
-                    <form action="/reservations/{{ $reservation->id }}" method="POST" class="inline">
-                        @csrf
-                        @method("DELETE")
-                        <button type="submit" class="border">Batal</button>
-                    </form>
-                    @endif
-                    @endif
-                    <a href="/reservations/{{ $reservation->id }}" class="border">Detail</a>
-                </td>
-            </tr>
-            @empty
-            <tr>
-                <td colspan="5">No data</td>
-            </tr>
-            @endforelse
-        </tbody>
-    </table>
+    @if (auth()->user()->hasRole('user'))
+    <a href="/schedules" class="btn btn-primary">Reservasi</a>
+    @endif
+    <div class="overflow-x-auto bg-base-100 border border-base-300 rounded">
+        <table class="table table-zebra">
+            <thead>
+                <tr>
+                    <th>Tanggal Reservasi</th>
+                    <th>Status</th>
+                    <th>Customer</th>
+                    <th>Lapangan</th>
+                    <th>Jadwal Hari</th>
+                    <th>Waktu Mulai</th>
+                    <th>Waktu Selesai</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @forelse($reservations as $reservation)
+                <tr>
+                    <td>{{ $reservation->reservation_date }}</td>
+                    <td>{{ $reservation->status }}</td>
+                    <td>{{ $reservation->user->name }}</td>
+                    <td>{{ $reservation->schedule->field->name }}</td>
+                    <td>{{ $reservation->schedule->day }}</td>
+                    <td>{{ $reservation->schedule->start_time }}</td>
+                    <td>{{ $reservation->schedule->end_time }}</td>
+                    <td>
+                        @if (auth()->user()->hasRole('user'))
+                        @if ($reservation->status == 'pending')
+                        <form action="/reservations/{{ $reservation->id }}" method="POST" class="inline">
+                            @csrf
+                            @method("DELETE")
+                            <button type="submit" class="btn btn-error">Batal</button>
+                        </form>
+                        @endif
+                        @endif
+                        <a href="/reservations/{{ $reservation->id }}" class="btn btn-info">Detail</a>
+                    </td>
+                </tr>
+                @empty
+                <tr>
+                    <td colspan="5">No data</td>
+                </tr>
+                @endforelse
+            </tbody>
+        </table>
+    </div>
 </x-base-layout>

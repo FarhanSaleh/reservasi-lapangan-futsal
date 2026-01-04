@@ -1,52 +1,63 @@
 <x-base-layout>
-    @if (session('error'))
+    @session('success')
+    <div class="text-green-500">
+        {{ session('success') }}
+    </div>
+    @endsession
+    @session('error')
     <p class="text-red-500">{{ session('error') }}</p>
-    @endif
+    @endsession
     <h1 class="text-2xl">Profile</h1>
-    <h1 class="text-xl">Role: {{ $user->role->name }}</h1>
-    <form action="/profile" method="POST">
+    <h1 class="text-lg font-bold">Role: {{ $user->role->name }}</h1>
+    <form action="/profile" method="POST" class="space-y-4">
         @csrf
         @method("PUT")
-        <div>
-            @error('name')
-            <p class="text-red-500">{{ $message }}</p>
-            @enderror
-            <input type="text" name="name" placeholder="Nama" class="border" value="{{ $user->name }}">
+        <div class="">
+            <fieldset class="fieldset ">
+                <legend class="fieldset-legend">Nama</legend>
+                <input type="text" class="input w-full" placeholder="Nama" name="name" value="{{ $user->name }}" />
+                @error('name')
+                <p class="label text-red-500">{{ $message }}</p>
+                @enderror
+            </fieldset>
+            <fieldset class="fieldset ">
+                <legend class="fieldset-legend">Email</legend>
+                <input type="email" class="input w-full" placeholder="Email" name="email" value="{{ $user->email }}" />
+                @error('email')
+                <p class="label text-red-500">{{ $message }}</p>
+                @enderror
+            </fieldset>
+            <fieldset class="fieldset ">
+                <legend class="fieldset-legend">Phone Number</legend>
+                <input type="text" class="input w-full" placeholder="Phone Number" name="phone_number"
+                    value="{{ $user->phone_number }}" />
+                @error('phone_number')
+                <p class="label text-red-500">{{ $message }}</p>
+                @enderror
+            </fieldset>
+            <fieldset class="fieldset ">
+                <legend class="fieldset-legend">Password Lama</legend>
+                <input type="password" class="input w-full" placeholder="Password Lama" name="old_password" />
+                @error('old_password')
+                <p class="label text-red-500">{{ $message }}</p>
+                @enderror
+            </fieldset>
+            <fieldset class="fieldset ">
+                <legend class="fieldset-legend">Password Baru</legend>
+                <input type="password" class="input w-full" placeholder="Password Baru" name="new_password" />
+                @error('new_password')
+                <p class="label text-red-500">{{ $message }}</p>
+                @enderror
+            </fieldset>
+            <fieldset class="fieldset ">
+                <legend class="fieldset-legend">Konfirmasi Password Baru</legend>
+                <input type="password" class="input w-full" placeholder="Konfirmasi Password Baru"
+                    name="password_confirmation" />
+                @error('password_confirmation')
+                <p class="label text-red-500">{{ $message }}</p>
+                @enderror
+            </fieldset>
         </div>
-        <div>
-            @error('email')
-            <p class="text-red-500">{{ $message }}</p>
-            @enderror
-            <input type="text" name="email" placeholder="Email" class="border" value="{{ $user->email }}">
-        </div>
-        <div>
-            @error('phone_number')
-            <p class="text-red-500">{{ $message }}</p>
-            @enderror
-            <input type="text" name="phone_number" placeholder="Phone Number" class="border"
-                value="{{ $user->phone_number }}">
-        </div>
-        <hr>
-        <div>
-            @error('old-password')
-            <p class="text-red-500">{{ $message }}</p>
-            @enderror
-            <input type="password" name="old-password" placeholder="Old Password" class="border">
-        </div>
-        <div>
-            @error('new-password')
-            <p class="text-red-500">{{ $message }}</p>
-            @enderror
-            <input type="password" name="new-password" placeholder="New Password" class="border">
-        </div>
-        <div>
-            @error('password_confirmation')
-            <p class="text-red-500">{{ $message }}</p>
-            @enderror
-            <input type="password" name="password_confirmation" placeholder="Confirm Password" class="border">
-        </div>
-        <div>
-            <button type="submit" class="border">Save</button>
-        </div>
+        <button type="submit" class="btn btn-primary">Save</button>
     </form>
 </x-base-layout>

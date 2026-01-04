@@ -9,11 +9,11 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
-<body>
-    <div class="drawer">
+<body class="bg-base-200 min-h-screen">
+    <div class="drawer sticky top-0 ">
         <input id="my-drawer-2" type="checkbox" class="drawer-toggle" />
         <div class="drawer-content flex flex-col">
-            <nav class="sticky top-0 navbar bg-base-100 shadow-sm">
+            <nav class="navbar bg-base-100 shadow-sm">
                 <div class="flex-none lg:hidden">
                     <label for="my-drawer-2" aria-label="open sidebar" class="btn btn-square btn-ghost">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
@@ -192,7 +192,7 @@
             </ul>
         </div>
     </div>
-    <main class="container mx-auto mt-6 px-2">
+    <main class="container mx-auto my-6 px-2 space-y-4">
         {{ $slot }}
     </main>
 </body>

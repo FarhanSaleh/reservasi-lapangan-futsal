@@ -125,9 +125,9 @@ class UserController extends Controller
             'name' => 'required|string|max:255',
             'email' => "required|email|unique:users,email,$user->id",
             'phone_number' => 'required|string|max:15',
-            'old-password' => 'nullable',
-            'new-password' => 'nullable|min:8',
-            'password_confirmation' => 'same:new-password'
+            'old_password' => 'nullable',
+            'new_password' => 'nullable|min:8',
+            'password_confirmation' => 'same:new_password'
         ]);
 
         if ($validator->fails()) {
@@ -140,14 +140,14 @@ class UserController extends Controller
         $user->email = $validated['email'];
         $user->phone_number = $validated['phone_number'];
 
-        if ($validated['old-password']) {
-            if (!Hash::check($validated['old-password'], $user->password)) {
+        if ($validated['old_password']) {
+            if (!Hash::check($validated['old_password'], $user->password)) {
                 return redirect()->back()->with('error', 'Password lama tidak sesuai'); // arahkan kembali ke halaman profil
             }
         }
 
-        if ($validated['new-password']) {
-            $user->password = Hash::make($validated['new-password']);
+        if ($validated['new_password']) {
+            $user->password = Hash::make($validated['new_password']);
         }
 
         $user->save();

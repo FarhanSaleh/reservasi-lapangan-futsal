@@ -10,54 +10,57 @@
         {{ session('error') }}
     </div>
     @endsession
-    <a href="/schedules/create" class="border">Create</a>
-    <table class="table-auto">
-        <thead>
-            <tr>
-                <th class="border">Hari</th>
-                <th class="border">Waktu Mulai</th>
-                <th class="border">Waktu Selesai</th>
-                <th class="border">Lapangan</th>
-                <th class="border">Tipe Lapangan</th>
-                <th class="border">Harga per jam</th>
-                <th class="border">Status</th>
-                <th class="border">Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            @forelse($schedules as $schedule)
-            <tr>
-                <td class="border p-2">{{ $schedule->day }}</td>
-                <td class="border p-2">{{ $schedule->start_time }}</td>
-                <td class="border p-2">{{ $schedule->end_time }}</td>
-                <td class="border p-2">{{ $schedule->field->name }}</td>
-                <td class="border p-2">{{ $schedule->field->type }}</td>
-                <td class="border p-2">{{ $schedule->field->price_per_hour }}</td>
-                <td class="border p-2">{{ $schedule->status }}</td>
-                <td class="border p-2">
-                    @if (auth()->user()->hasRole('admin') || auth()->user()->hasRole('pengelola'))
-                    <a href="/schedules/{{ $schedule->id }}/edit" class="border">Edit</a>
-                    <form action="/schedules/{{ $schedule->id }}" method="POST" class="inline">
-                        @csrf
-                        @method("DELETE")
-                        <button type="submit" class="border">Delete</button>
-                    </form>
-                    @endif
-                    @if (auth()->user()->hasRole('user'))
-                    <form action="/reservations" method="POST" class="inline">
-                        @csrf
-                        @method("POST")
-                        <input type="hidden" name="schedule_id" value="{{ $schedule->id }}">
-                        <button type="submit" class="border">Pesan</button>
-                    </form>
-                    @endif
-                </td>
-            </tr>
-            @empty
-            <tr>
-                <td colspan="5">No data</td>
-            </tr>
-            @endforelse
-        </tbody>
-    </table>
+    <a href="/schedules/create" class="btn btn-primary">Create</a>
+    <div class="overflow-x-auto bg-base-100 border border-base-300 rounded">
+        <table class="table table-zebra">
+            <thead>
+                <tr>
+                    <th>Hari</th>
+                    <th>Waktu Mulai</th>
+                    <th>Waktu Selesai</th>
+                    <th>Lapangan</th>
+                    <th>Tipe Lapangan</th>
+                    <th>Harga per jam</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @forelse($schedules as $schedule)
+                <tr>
+                    <td>{{ $schedule->day }}</td>
+                    <td>{{ $schedule->start_time }}</td>
+                    <td>{{ $schedule->end_time }}</td>
+                    <td>{{ $schedule->field->name }}</td>
+                    <td>{{ $schedule->field->type }}</td>
+                    <td>{{ $schedule->field->price_per_hour }}</td>
+                    <td class="{{ $schedule->status == 'available' ? 'text-success' : 'text-error' }}">{{
+                        $schedule->status }}</td>
+                    <td>
+                        @if (auth()->user()->hasRole('admin') || auth()->user()->hasRole('pengelola'))
+                        <a href="/schedules/{{ $schedule->id }}/edit" class="btn btn-warning">Edit</a>
+                        <form action="/schedules/{{ $schedule->id }}" method="POST" class="inline">
+                            @csrf
+                            @method("DELETE")
+                            <button type="submit" class="btn btn-error">Delete</button>
+                        </form>
+                        @endif
+                        @if (auth()->user()->hasRole('user'))
+                        <form action="/reservations" method="POST" class="inline">
+                            @csrf
+                            @method("POST")
+                            <input type="hidden" name="schedule_id" value="{{ $schedule->id }}">
+                            <button type="submit" class="btn btn-primary">Pesan</button>
+                        </form>
+                        @endif
+                    </td>
+                </tr>
+                @empty
+                <tr>
+                    <td colspan="5">No data</td>
+                </tr>
+                @endforelse
+            </tbody>
+        </table>
+    </div>
 </x-base-layout>
