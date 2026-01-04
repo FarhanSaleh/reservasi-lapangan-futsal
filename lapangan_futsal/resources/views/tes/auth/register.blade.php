@@ -10,40 +10,64 @@
 </head>
 
 <body>
-    <form action="/register" method="POST">
-        @csrf
-        @method("POST")
-        <div>
-            @error('name')
-            <p class="text-red-500">{{ $message }}</p>
-            @enderror
-            <input type="text" name="name" placeholder="Nama" class="border" value="{{ old('name') }}">
-        </div>
-        <div>
-            @error('email')
-            <p class="text-red-500">{{ $message }}</p>
-            @enderror
-            <input type="text" name="email" placeholder="Email" class="border" value="{{ old('email') }}">
-        </div>
-        <div>
-            @error('phone_number')
-            <p class="text-red-500">{{ $message }}</p>
-            @enderror
-            <input type="text" name="phone_number" placeholder="Phone Number" class="border" value="{{ old('phone_number') }}">
-        </div>
-        <div>
-            @error('password')
-            <p class="text-red-500">{{ $message }}</p>
-            @enderror
-            <input type="password" name="password" placeholder="Password" class="border">
-        </div>
-        <div>
-            <input type="password" name="password_confirmation" placeholder="Konfirmasi Password" class="border">
-        </div>
-        <div>
-            <button type="submit" class="border">Register</button>
-        </div>
-    </form>
+    <div class="h-screen flex items-center justify-center">
+        <form action="/register" method="POST">
+            <div class="card w-auto sm:w-96 bg-base-100 shadow-sm">
+                <div class="card-body">
+                    <h2 class="text-2xl">Register</h2>
+                    <p class="text-red-500 font-bold">
+                        @session('error')
+                        {{ session('error') }}
+                        @endsession
+                    </p>
+                    @csrf
+                    @method("POST")
+                    <fieldset class="fieldset ">
+                        <legend class="fieldset-legend">Nama</legend>
+                        <input type="text" class="input w-full" placeholder="Nama" name="name"
+                            value="{{ old('name') }}" />
+                        @error('name')
+                        <p class="label text-red-500">{{ $message }}</p>
+                        @enderror
+                    </fieldset>
+                    <fieldset class="fieldset ">
+                        <legend class="fieldset-legend">Email</legend>
+                        <input type="email" class="input w-full" placeholder="Email" name="email"
+                            value="{{ old('email') }}" />
+                        @error('email')
+                        <p class="label text-red-500">{{ $message }}</p>
+                        @enderror
+                    </fieldset>
+                    <fieldset class="fieldset ">
+                        <legend class="fieldset-legend">Phone Number</legend>
+                        <input type="text" class="input w-full" placeholder="Phone Number" name="phone_number"
+                            value="{{ old('phone_number') }}" />
+                        @error('phone_number')
+                        <p class="label text-red-500">{{ $message }}</p>
+                        @enderror
+                    </fieldset>
+                    <fieldset class="fieldset ">
+                        <legend class="fieldset-legend">Password</legend>
+                        <input type="password" class="input w-full" placeholder="Password" name="password"
+                            value="{{ old('password') }}" />
+                        @error('password')
+                        <p class="label text-red-500">{{ $message }}</p>
+                        @enderror
+                    </fieldset>
+                    <fieldset class="fieldset ">
+                        <legend class="fieldset-legend">Konfirmasi Password</legend>
+                        <input type="password" class="input w-full" placeholder="Konfirmasi Password"
+                            name="password_confirmation" value="{{ old('password_confirmation') }}" />
+                        @error('password_confirmation')
+                        <p class="label text-red-500">{{ $message }}</p>
+                        @enderror
+                    </fieldset>
+                    <button type="submit" class="btn btn-primary">Register</button>
+                    <p class="text-xs self-center">Sudah punya akun? <a class="text-primary font-bold" href="/login">Login</a></p>
+                </div>
+            </div>
+        </form>
+    </div>
 </body>
 
 </html>
